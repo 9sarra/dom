@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Panier d'achat</title>
+  <style>
+    /* Styles CSS pour les éléments du panier */
+  </style>
+</head>
+<body>
+  <h1>Panier</h1>
+
+  <div class="item">
+    <h3>Produit 1</h3>
+    <span class="price">$19.99</span>
+    <button class="btn-incrementer">+</button>
+    <span class="quantity">1</span>
+    <button class="btn-decrementer">-</button>
+    <button class="btn-supprimer">Supprimer</button>
+    <button class="btn-aimer">J'aime</button>
+  </div>
+
+  <div class="item">
+    <h3>Produit 2</h3>
+    <span class="price">$9.99</span>
+    <button class="btn-incrementer">+</button>
+    <span class="quantity">1</span>
+    <button class="btn-decrementer">-</button>
+    <button class="btn-supprimer">Supprimer</button>
+    <button class="btn-aimer">J'aime</button>
+  </div>
+
+  <div id="totalPrice">Total : $0.00</div>
+
+  <script>
+   
+var quantities = document.querySelectorAll(".quantity");
+
+var incrementButtons = document.querySelectorAll(".btn-incrementer");
+
+var decrementButtons = document.querySelectorAll(".btn-decrementer");
+
+var deleteButtons = document.querySelectorAll(".btn-supprimer");
+
+var likeButtons = document.querySelectorAll(".btn-aimer");
+
+// Initialiser le prix total en fonction des quantités initiales
+var initialTotalPrice = 0;
+for (var i = 0; i < quantities.length; i++) {
+  var quantity = parseInt(quantities[i].textContent);
+  var price = parseFloat(
+    document.querySelectorAll(".price")[i].textContent.substring(1)
+  );
+  initialTotalPrice += quantity * price;
+}
+var totalPriceElement = document.getElementById("totalPrice");
+totalPriceElement.textContent = "Total : $" + initialTotalPrice.toFixed(2);
+
+// Ajouter des écouteurs d'événements aux boutons
+for (var i = 0; i < incrementButtons.length; i++) {
+  incrementButtons[i].addEventListener("click", incrementerQuantite);
+  decrementButtons[i].addEventListener("click", decrementerQuantite);
+  deleteButtons[i].addEventListener("click", supprimerElement);
+  likeButtons[i].addEventListener("click", basculerAimer);
+}
+
+// Fonction pour incrémenter la quantité
+function incrementerQuantite() {
+  var quantityElement = this.parentNode.querySelector(".quantity");
+  var quantity = parseInt(quantityElement.textContent);
+  quantity++;
+  quantityElement.textContent = quantity;
+  updateTotalPrice();
+}
+
+// Fonction pour décrémenter la quantité
+function decrementerQuantite() {
+  var quantityElement = this.parentNode.querySelector(".quantity");
+  var quantity = parseInt(quantityElement.textContent);
+  if (quantity > 1) {
+    quantity--;
+    quantityElement.textContent = quantity;
+    updateTotalPrice();
+  }
+}
+
+// Fonction pour supprimer un élément
+function supprimerElement() {
+  var item = this.parentNode;
+  item.parentNode.removeChild(item);
+  updateTotalPrice();
+}
+
+// Fonction pour basculer l'état de "J'aime"
+function basculerAimer() {
+  this.classList.toggle("aimer");
+}
+
+// Sélectionner le cœur rouge
+var redHeart = document.querySelector(".heart");
+
+// Ajouter un gestionnaire d'événement de clic au cœur
+redHeart.addEventListener("click", function () {
+  // Vérifier la couleur actuelle du cœur
+  var currentColor = this.style.color;
+
+  // Changer la couleur en bleu
+  this.style.color = "blue";
+});
+
+// Fonction pour mettre à jour le prix total
+function updateTotalPrice() {
+  var quantities = document.querySelectorAll(".quantity");
+  var prices = document.querySelectorAll(".price");
+  var total = 0;
+  for (var i = 0; i < quantities.length; i++) {
+    var quantity = parseInt(quantities[i].textContent);
+    var price = parseFloat(prices[i].textContent.substring(1));
+    total += quantity * price;
+  }
+  var totalPriceElement = document.getElementById("totalPrice");
+  totalPriceElement.textContent = "Total : $" + total.toFixed(2);
+}
+
+  </script>
+</body>
+</html>
